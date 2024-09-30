@@ -32,7 +32,7 @@ export const session = reactive({
             }
         },
         onSuccess(data) {
-            if (data.status === 'success') {
+            if (data && data.status === 'success') {
                 userResource.reload()
                 session.user = sessionUser()
                 document.cookie = `supplier_id=${data.supplier_id}`
@@ -42,7 +42,10 @@ export const session = reactive({
                 session.login.reset()
                 router.replace({ name: 'SupplierInvoiceList' })
             }
-        }
+        },
+        onError(error) {
+            console.error('Login failed', error)
+        },
     }),
     login: createResource({
         url: 'login',
@@ -53,15 +56,17 @@ export const session = reactive({
             }
         },
         onSuccess(data) {
-            userResource.reload()
-            session.user = sessionUser()
-            // clear supplier_id and supplier_name
-            document.cookie = `supplier_id=${session.supplier_id}; expires=Thu, 01 Jan 1970 00:00:00 UTC'`;
-            document.cookie = `supplier_id=${session.supplier_name}; expires=Thu, 01 Jan 1970 00:00:00 UTC'`;
-            session.supplier_id = ''
-            session.supplier_name = ''
-            session.login.reset()
-            router.replace({ name: 'SupplierInvoiceList' })
+            if (data) {
+                userResource.reload()
+                session.user = sessionUser()
+                // clear supplier_id and supplier_name
+                document.cookie = `supplier_id=${session.supplier_id}; expires=Thu, 01 Jan 1970 00:00:00 UTC'`;
+                document.cookie = `supplier_id=${session.supplier_name}; expires=Thu, 01 Jan 1970 00:00:00 UTC'`;
+                session.supplier_id = ''
+                session.supplier_name = ''
+                session.login.reset()
+                router.replace({ name: 'SupplierInvoiceList' })
+            }
         },
         onError(error) {
             console.error('Login failed', error)

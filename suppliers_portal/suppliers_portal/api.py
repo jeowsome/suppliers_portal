@@ -15,3 +15,6 @@ def validate_supplier_id(supplier_id: str) -> dict:
             "supplier_id": supplier_id,
             "supplier_name": portal_supplier.company_name,
         }
+    else:
+        frappe.local.response["http_status_code"] = 404
+        frappe.throw("Supplier not found", frappe.AuthenticationError)
