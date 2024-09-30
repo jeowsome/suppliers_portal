@@ -43,6 +43,8 @@ router.beforeEach(async (to, from, next) => {
     next({ name: 'SupplierInvoiceList' })
   } else if (to.name !== 'Login' && !isLoggedIn) {
     next({ name: 'Login' })
+  } else if (!isLoggedIn) {
+    next({ name: 'Login' })
   } else {
     next()
   }
