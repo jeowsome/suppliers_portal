@@ -63,6 +63,9 @@ export const session = reactive({
             session.login.reset()
             router.replace({ name: 'SupplierInvoiceList' })
         },
+        onError(error) {
+            console.error('Login failed', error)
+        },
     }),
     logout: createResource({
         url: 'logout',

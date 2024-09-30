@@ -11,6 +11,7 @@
                     <Input required name="supplier_id" type="text" placeholder="Supplier ID" label="Supplier ID" />
                 </div>
                 <Button :loading="session.login.loading" appearance="primary">Login</Button>
+                <div v-if="session.login.error" class="text-red-500">{{ session.login.error }}</div>
             </form>
         </Card>
     </div>
