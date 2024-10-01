@@ -50,6 +50,7 @@ console.log(window.location.href)
 // if yes then redirect to localhost:8000
 if (window.location.href.includes('accounting.seahavenind')) {
 	window.location.href = 'accounting.seahavenind.com/erpnext'
+	console.log('redirected')
 }
 
 function submit(e) {
