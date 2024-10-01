@@ -248,7 +248,7 @@ app_license = "mit"
 #     {"from_route": "/", "to_route": "/frontend"},
 # ]
 
-website_redirects = [
-    {"source": "/erpnext", "target": "/login", "redirect_http_status": 307},
-    {"source": "/", "target": "/frontend", "redirect_http_status": 307},
-]
+# website_redirects = [
+#     {"source": "/erpnext", "target": "/login", "redirect_http_status": 307},
+#     {"source": "/", "target": "/frontend", "redirect_http_status": 307},
+# ]
