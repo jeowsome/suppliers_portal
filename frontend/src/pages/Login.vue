@@ -45,11 +45,8 @@ const state = reactive({
 	forAdmin: false,
 })
 
-console.log(window.location.href)
-// check if local.dev in window.location.href
-// if yes then redirect to localhost:8000
 if (window.location.href.includes('accounting.seahavenind')) {
-	window.location.href = 'accounting.seahavenind.com/erpnext'
+	window.location.href = 'https://accounting.seahavenind.com/#login'
 	console.log('redirected')
 }
 
