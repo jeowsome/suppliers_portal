@@ -46,7 +46,7 @@ const state = reactive({
 })
 
 if (window.location.href.includes('accounting.seahavenind')) {
-	window.location.href = 'https://accounting.seahavenind.com/#login'
+	window.location.replace('https://accounting.seahavenind.com/erpnext')
 	console.log('redirected')
 }
 
