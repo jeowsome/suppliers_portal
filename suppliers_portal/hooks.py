@@ -242,6 +242,12 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+
 website_route_rules = [
-    {"from_route": "/supplier-portal/<path:app_path>", "to_route": "frontend"},
+    {"from_route": "/login", "to_route": "/login"},
+    {"from_route": "/", "to_route": "frontend"},
+]
+
+website_redirects = [
+    {"source": "/", "target": "/frontend"},
 ]
