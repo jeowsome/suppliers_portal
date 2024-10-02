@@ -14,7 +14,7 @@
  "is_hidden": 0,
  "label": "Suppliers Portal",
  "links": [],
- "modified": "2024-10-02 17:28:17.519004",
+ "modified": "2024-10-03 03:19:57.683322",
  "modified_by": "Administrator",
  "module": "Suppliers Portal",
  "name": "Suppliers Portal",
@@ -43,5 +43,6 @@
    "type": "DocType"
   }
  ],
- "title": "Suppliers Portal"
+ "title": "Suppliers Portal",
+ "type": "Workspace"
 }
