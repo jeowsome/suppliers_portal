@@ -140,6 +140,27 @@
 						</div>
 					</div>
 				</div>
+				<div class="mb-2 row">
+					<div class="col"></div>
+					<div class="col">
+						<div class="row">
+							<label for="invoice_date" class="col-sm-3 col-form-label"
+								>Due Date</label
+							>
+							<div class="col-sm-8">
+								<TextInput
+									:type="'date'"
+									size="lg"
+									variant="outline"
+									placeholder="Due Date"
+									id="due_date"
+									:disabled="true"
+									v-model="invoiceDueDate"
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
 
 				<div class="mb-2 row">
 					<div class="col">
@@ -408,6 +429,7 @@
 import { computed, reactive } from 'vue'
 import { createListResource } from 'frappe-ui'
 import { sessionSupplierId, sessionSupplierName } from '../data/session'
+import { addDays, parseInvoiceTerms } from '../data/utils'
 import router from '../router'
 import TextInput from 'frappe-ui/src/components/TextInput.vue'
 import Textarea from 'frappe-ui/src/components/Textarea.vue'
@@ -442,6 +464,10 @@ const invoiceTermOptions = [
 		label: 'NET 60',
 		value: 'NET 60',
 	},
+	{
+		label: 'Due on Receipt',
+		value: 'Due on Receipt',
+	},
 ]
 
 const serviceTypeOption = [
@@ -473,6 +499,17 @@ const invoiceData = reactive({
 })
 
 const invoiceItems = reactive([])
+let invoiceDueDate = computed(() => {
+	if (invoiceData.invoice_terms) {
+		let result = addDays(
+			invoiceData.invoice_date,
+			parseInvoiceTerms(invoiceData.invoice_terms),
+		)
+		// return as string
+		return result.toISOString().split('T')[0]
+	}
+	return ''
+})
 
 const addRow = () => {
 	const rowObject = reactive({
