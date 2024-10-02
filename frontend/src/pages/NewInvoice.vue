@@ -38,7 +38,6 @@
 									class="form-control"
 									id="supplier_invoice_number"
 									v-model.number="invoiceData.supplier_invoice_number"
-									required
 								/>
 							</div>
 						</div>
@@ -66,7 +65,7 @@
 				<div class="mb-2 row">
 					<div class="col">
 						<div class="row">
-							<label for="suppplier_id" class="col-sm-3 col-form-label"
+							<label for="supplier_id" class="col-sm-3 col-form-label"
 								>Supplier ID</label
 							>
 							<div class="col-sm-8">
@@ -74,8 +73,8 @@
 									type="text"
 									readonly
 									class="form-control-plaintext"
-									id="suppplier_id"
-									:value="invoiceData.supplier"
+									id="supplier_id"
+									v-model="invoiceData.supplier"
 								/>
 							</div>
 						</div>
@@ -103,7 +102,7 @@
 				<div class="mb-2 row">
 					<div class="col">
 						<div class="row">
-							<label for="suppplier_name" class="col-sm-3 col-form-label"
+							<label for="supplier_name" class="col-sm-3 col-form-label"
 								>Supplier Name</label
 							>
 							<div class="col-sm-8">
@@ -111,8 +110,18 @@
 									type="text"
 									readonly
 									class="form-control-plaintext"
-									id="suppplier_name"
+									id="supplier_name"
 									:value="invoiceData.supplier_name"
+									v-if="!isAdministrator"
+								/>
+								<Autocomplete
+									id="supplier_name"
+									:options="portalSuppliers.data"
+									:placeholder="'Supplier Name'"
+									:hideSearch="invoiceData.supplier_invoice_number"
+									:label="'company_name'"
+									v-model="invoiceData.supplier_name"
+									v-else
 								/>
 							</div>
 						</div>
@@ -426,13 +435,16 @@
 </template>
 
 <script setup>
-import { computed, reactive } from 'vue'
+import { computed, reactive, readonly, watch } from 'vue'
 import { createListResource } from 'frappe-ui'
-import { sessionSupplierId, sessionSupplierName } from '../data/session'
+import { sessionSupplierId, sessionSupplierName, sessionUser } from '../data/session'
 import { addDays, parseInvoiceTerms } from '../data/utils'
 import router from '../router'
 import TextInput from 'frappe-ui/src/components/TextInput.vue'
 import Textarea from 'frappe-ui/src/components/Textarea.vue'
+import Autocomplete from 'frappe-ui/src/components/Autocomplete.vue'
+
+const isAdministrator = sessionUser() === 'Administrator'
 
 const portalInvoice = createListResource({
 	doctype: 'Supplier Portal Invoices',
@@ -554,6 +566,22 @@ const saveInvoice = () => {
 		}),
 	})
 }
+const portalSuppliers = createListResource({
+	doctype: 'Portal Supplier',
+	fields: ['name as value', 'company_name as label'],
+	orderBy: 'creation desc',
+})
+portalSuppliers.fetch()
+
+// watch for changes in invoiceData.supplier_name
+watch(
+	() => invoiceData.supplier_name,
+	(newVal) => {
+		if (newVal) {
+			invoiceData.supplier = newVal.value
+		}
+	},
+)
 </script>
 
 <style lang="css" scoped>
