@@ -32,7 +32,7 @@
 							<label for="supplier_invoice_number" class="col-sm-3 col-form-label"
 								>Invoice Number</label
 							>
-							<div class="col-sm-5">
+							<div class="col-sm-8">
 								<input
 									type="text"
 									class="form-control"
@@ -48,7 +48,7 @@
 							<label for="service_date" class="col-sm-3 col-form-label"
 								>Service Date</label
 							>
-							<div class="col-sm-5">
+							<div class="col-sm-8">
 								<TextInput
 									:type="'date'"
 									size="lg"
@@ -69,7 +69,7 @@
 							<label for="suppplier_id" class="col-sm-3 col-form-label"
 								>Supplier ID</label
 							>
-							<div class="col-sm-5">
+							<div class="col-sm-8">
 								<input
 									type="text"
 									readonly
@@ -85,7 +85,7 @@
 							<label for="invoice_date" class="col-sm-3 col-form-label"
 								>Invoice Date</label
 							>
-							<div class="col-sm-5">
+							<div class="col-sm-8">
 								<TextInput
 									:type="'date'"
 									size="lg"
@@ -106,7 +106,7 @@
 							<label for="suppplier_name" class="col-sm-3 col-form-label"
 								>Supplier Name</label
 							>
-							<div class="col-sm-5">
+							<div class="col-sm-8">
 								<input
 									type="text"
 									readonly
@@ -122,9 +122,9 @@
 							<label for="invoice_terms" class="col-sm-3 col-form-label"
 								>Invoice Terms</label
 							>
-							<div class="col-sm-5">
+							<div class="col-sm-8">
 								<select
-									class="form-select form-select-mb"
+									class="form-select form-select-mb h-100 d-inline-block"
 									aria-label="Invoice Terms"
 									v-model="invoiceData.invoice_terms"
 								>
@@ -167,7 +167,7 @@
 											<label for="street" class="col-sm-3 col-form-label"
 												>Street</label
 											>
-											<div class="col-sm-5">
+											<div class="col-sm-8">
 												<input
 													type="text"
 													class="form-control"
@@ -180,7 +180,7 @@
 											<label for="city" class="col-sm-3 col-form-label"
 												>City</label
 											>
-											<div class="col-sm-5">
+											<div class="col-sm-8">
 												<input
 													type="text"
 													class="form-control"
@@ -193,7 +193,7 @@
 											<label for="state" class="col-sm-3 col-form-label"
 												>State</label
 											>
-											<div class="col-sm-5">
+											<div class="col-sm-8">
 												<input
 													type="text"
 													class="form-control"
@@ -206,7 +206,7 @@
 											<label for="zip_code" class="col-sm-3 col-form-label"
 												>Zip Code</label
 											>
-											<div class="col-sm-5">
+											<div class="col-sm-8">
 												<input
 													type="text"
 													class="form-control"
@@ -221,11 +221,7 @@
 						</div>
 					</div>
 					<div class="col">
-						<div
-							class="accordion accordion-flush"
-							id="address-accordion"
-							v-if="!sessionSupplierId()"
-						>
+						<div class="accordion accordion-flush" id="address-accordion">
 							<div class="accordion-item">
 								<h2 class="accordion-header ps-0">
 									<button
@@ -236,7 +232,11 @@
 										aria-expanded="true"
 										aria-controls="collapse-2"
 									>
-										Payment Reference and Notes
+										{{
+											sessionSupplierId()
+												? 'Notes'
+												: 'Payment Reference and Notes'
+										}}
 									</button>
 								</h2>
 								<div
@@ -245,7 +245,7 @@
 									data-bs-parent="#address-accordion"
 								>
 									<div class="accordion-body">
-										<div class="row mb-1">
+										<div class="row mb-1" v-if="!sessionSupplierId()">
 											<label
 												for="payment_reference_no"
 												class="col-sm-3 col-form-label"
@@ -260,7 +260,7 @@
 												/>
 											</div>
 										</div>
-										<div class="row mb-1">
+										<div class="row mb-1" v-if="!sessionSupplierId()">
 											<label
 												for="payment_reference_date"
 												class="col-sm-3 col-form-label"
@@ -282,14 +282,13 @@
 											<label for="notes" class="col-sm-3 col-form-label"
 												>Notes</label
 											>
-											<div class="col-sm-5">
+											<div class="col-md-8">
 												<Textarea
 													:variant="'subtle'"
 													size="md"
 													placeholder="Enter Notes Here"
 													:disabled="false"
 													v-model="invoiceData.notes"
-													label="Notes"
 													id="notes"
 												/>
 											</div>
@@ -308,7 +307,7 @@
 					<thead>
 						<tr>
 							<th scope="col">#</th>
-							<th scope="col">Service Type</th>
+							<th scope="col" width="30%">Service Type</th>
 							<th scope="col">Quantity</th>
 							<th scope="col">Rate</th>
 							<th scope="col">Amount</th>
@@ -318,19 +317,21 @@
 						<tr v-for="(item, index) in invoiceItems" :key="index">
 							<th scope="row">{{ index + 1 }}</th>
 							<td>
-								<select
-									class="form-select form-select-mb"
-									aria-label="Service Types"
-									v-model="item.service_type"
-								>
-									<option readonly></option>
-									<option
-										v-for="option in serviceTypeOption"
-										:value="option.value"
+								<div class="col-mb-12">
+									<select
+										class="form-select form-select-mb h-100 d-inline-block"
+										aria-label="Service Types"
+										v-model="item.service_type"
 									>
-										{{ option.label }}
-									</option>
-								</select>
+										<option readonly></option>
+										<option
+											v-for="option in serviceTypeOption"
+											:value="option.value"
+										>
+											{{ option.label }}
+										</option>
+									</select>
+								</div>
 							</td>
 							<td>
 								<input type="text" class="form-control" v-model="item.quantity" />
