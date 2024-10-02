@@ -1,4 +1,4 @@
-import router from '../router'
+import router from '@/router'
 import { createResource } from 'frappe-ui'
 
 export const userResource = createResource({
@@ -6,7 +6,7 @@ export const userResource = createResource({
     cache: 'User',
     onError(error) {
         if (error && error.exc_type === 'AuthenticationError') {
-            router.push({ name: 'Login' })
+            router.push({ name: 'LoginPage' })
         }
     },
 })
